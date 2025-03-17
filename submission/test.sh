@@ -69,7 +69,7 @@ check_cmd "P2SH address generation"
 SEGWIT_ADDR=$(bitcoin-cli -regtest -rpcwallet=btrustwallet getnewaddress "" "bech32")
 check_cmd "SegWit address generation"
 
-TAPROOT_ADDR=$(bitcoin-cli -regtest -rpcwallet=btrustwallet getnewaddress "" "bech32m"
+TAPROOT_ADDR=$(bitcoin-cli -regtest -rpcwallet=btrustwallet getnewaddress "" "bech32m")
 check_cmd "Taproot address generation"
 
 echo "Your exploration addresses:"
@@ -113,7 +113,7 @@ echo "--------------------------------------------"
 echo "To ensure the P2SH vault is secure, verify it's a valid Bitcoin address"
 # STUDENT TASK: Validate the P2SH address
 # WRITE YOUR SOLUTION BELOW:
-P2SH_VALID=
+P2SH_VALID=$(bitcoin-cli -regtest $P2SH_ADDR)
 check_cmd "Address validation"
 echo "P2SH vault validation: $P2SH_VALID"
 
