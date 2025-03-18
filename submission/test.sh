@@ -102,7 +102,7 @@ NEW_BALANCE=$(bitcoin-cli -regtest -rpcwallet=btrustwallet getbalance)
 check_cmd "New balance check"
 echo "Your treasure balance: $NEW_BALANCE BTC"
 
-COLLECTED=$NEW_BALANCE
+COLLECTED=$(echo "$NEW_BALANCE - $BALANCE" | bc)
 check_cmd "Balance calculation"
 echo "You've collected $COLLECTED BTC in treasures!"
 
@@ -144,7 +144,7 @@ echo "For CI testing, we'll verify the correct message directly:"
 
 # STUDENT TASK: Verify the message
 # WRITE YOUR SOLUTION BELOW:
-VERIFY_RESULT=$(bitcoin-cli -regtest -rpcwallet=btrustwallet verifymessage $LEGACY_ADDR $SIGNATURE $SECRET_MESSAGE)
+VERIFY_RESULT=$(bitcoin-cli -regtest -rpcwallet=btrustwallet verifymessage $LEGACY_ADDR $SIGNATURE "$SECRET_MESSAGE")
 check_cmd "Message verification"
 echo "Message verification result: $VERIFY_RESULT"
 
@@ -176,7 +176,8 @@ check_cmd "Getting address info"
 
 # STUDENT TASK: Extract the internal key (the x-only pubkey) from the descriptor
 # WRITE YOUR SOLUTION BELOW:
-INTERNAL_KEY=$($ADDR_INFO | jq -r '.desc')
+DESCRIPTOR=$(echo $ADDR_INFO | jq -r '.desc')
+INTERNAL_KEY=$(echo $DESCRIPTOR | cut -d "]" -f 2 | cut -d ")" -f 1)
 check_cmd "Extracting key from descriptor"
 INTERNAL_KEY=$(trim "$INTERNAL_KEY")
 
